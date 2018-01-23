@@ -849,6 +849,8 @@ static bool cam_icp_debug_clk_update(struct cam_icp_clk_info *hw_mgr_clk_info)
 		icp_hw_mgr.icp_debug_clk != hw_mgr_clk_info->curr_clk) {
 		hw_mgr_clk_info->base_clk = icp_hw_mgr.icp_debug_clk;
 		hw_mgr_clk_info->curr_clk = icp_hw_mgr.icp_debug_clk;
+		hw_mgr_clk_info->uncompressed_bw = icp_hw_mgr.icp_debug_clk;
+		hw_mgr_clk_info->compressed_bw = icp_hw_mgr.icp_debug_clk;
 		CAM_DBG(CAM_ICP, "bc = %d cc = %d",
 			hw_mgr_clk_info->base_clk, hw_mgr_clk_info->curr_clk);
 		return true;
@@ -864,7 +866,6 @@ static bool cam_icp_default_clk_update(struct cam_icp_clk_info *hw_mgr_clk_info)
 		hw_mgr_clk_info->curr_clk = icp_hw_mgr.icp_default_clk;
 		hw_mgr_clk_info->uncompressed_bw = icp_hw_mgr.icp_default_clk;
 		hw_mgr_clk_info->compressed_bw = icp_hw_mgr.icp_default_clk;
-		hw_mgr_clk_info->compressed_bw_ab = icp_hw_mgr.icp_default_clk;
 		CAM_DBG(CAM_ICP, "bc = %d cc = %d",
 			hw_mgr_clk_info->base_clk, hw_mgr_clk_info->curr_clk);
 		return true;
@@ -921,8 +922,7 @@ static bool cam_icp_update_bw(struct cam_icp_hw_mgr *hw_mgr,
 				ctx->clk_info.compressed_bw_ab;
 			CAM_DBG(CAM_ICP, "ubw = %lld, cbw = %lld cbw_ab",
 				hw_mgr_clk_info->uncompressed_bw,
-				hw_mgr_clk_info->compressed_bw,
-				hw_mgr_clk_info->compressed_bw_ab);
+				hw_mgr_clk_info->compressed_bw);
 		}
 	}
 
@@ -2550,7 +2550,6 @@ static int cam_icp_mgr_hw_close_u(void *hw_priv, void *hw_close_args)
 	struct cam_icp_hw_mgr *hw_mgr = hw_priv;
 	int rc = 0;
 
-	CAM_DBG(CAM_ICP, "UMD calls close");
 	if (!hw_mgr) {
 		CAM_ERR(CAM_ICP, "Null hw mgr");
 		return 0;
@@ -2567,7 +2566,6 @@ static int cam_icp_mgr_hw_close_k(void *hw_priv, void *hw_close_args)
 {
 	struct cam_icp_hw_mgr *hw_mgr = hw_priv;
 
-	CAM_DBG(CAM_ICP, "KMD calls close");
 	if (!hw_mgr) {
 		CAM_ERR(CAM_ICP, "Null hw mgr");
 		return 0;
@@ -2980,6 +2978,7 @@ static int cam_icp_mgr_hw_close(void *hw_priv, void *hw_close_args)
 
 	cam_icp_free_hfi_mem();
 	hw_mgr->fw_download = false;
+	hw_mgr->secure_mode = CAM_SECURE_MODE_NON_SECURE;
 
 	CAM_DBG(CAM_ICP, "Exit");
 	return rc;
