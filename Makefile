@@ -1417,6 +1417,9 @@ archheaders:
 PHONY += archscripts
 archscripts:
 
+techpack-dirs := $(shell find $(srctree)/techpack -maxdepth 1 -mindepth 1 -type d -not -name ".*")
+techpack-dirs := $(subst $(srctree)/,,$(techpack-dirs))
+
 PHONY += __headers
 __headers: $(version_h) scripts_basic uapi-asm-generic archheaders archscripts
 	$(Q)$(MAKE) $(build)=scripts build_unifdef
@@ -1431,7 +1434,9 @@ headers_install: __headers
 	  $(error Headers not exportable for the $(SRCARCH) architecture))
 	$(Q)$(MAKE) $(hdr-inst)=include/uapi dst=include
 	$(Q)$(MAKE) $(hdr-inst)=arch/$(hdr-arch)/include/uapi $(hdr-dst)
-	$(Q)$(MAKE) $(hdr-inst)=techpack/audio/include/uapi dst=techpack/audio/include
+	$(Q)for d in $(techpack-dirs); do \
+		$(MAKE) $(hdr-inst)=$$d/include/uapi; \
+	done
 
 PHONY += headers_check_all
 headers_check_all: headers_install_all
@@ -1441,7 +1446,9 @@ PHONY += headers_check
 headers_check: headers_install
 	$(Q)$(MAKE) $(hdr-inst)=include/uapi dst=include HDRCHECK=1
 	$(Q)$(MAKE) $(hdr-inst)=arch/$(hdr-arch)/include/uapi $(hdr-dst) HDRCHECK=1
-	$(Q)$(MAKE) $(hdr-inst)=techpack/audio/include/uapi dst=techpack/audio/include HDRCHECK=1
+	$(Q)for d in $(techpack-dirs); do \
+		$(MAKE) $(hdr-inst)=$$d/include/uapi HDRCHECK=1; \
+	done
 
 # ---------------------------------------------------------------------------
 # Kernel selftest
