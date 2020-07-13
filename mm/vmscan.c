@@ -2064,7 +2064,6 @@ static unsigned move_active_pages_to_lru(struct lruvec *lruvec,
 		list_del(&page->lru);
 		SetPageLRU(page);
 		add_page_to_lru_list(page, lruvec);
-
 		if (put_page_testzero(page)) {
 			del_page_from_lru_list(page, lruvec);
 			__clear_page_lru_flags(page);
