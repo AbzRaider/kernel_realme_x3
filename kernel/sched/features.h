@@ -125,9 +125,14 @@ SCHED_FEAT(ENERGY_AWARE, false)
  *   ON: If the target CPU saves any energy, use that.
  *   OFF: Use whichever of target or backup saves most.
  */
-SCHED_FEAT(EAS_PREFER_IDLE, true)
 SCHED_FEAT(FIND_BEST_TARGET, true)
 SCHED_FEAT(FBT_STRICT_ORDER, false)
+SCHED_FEAT(EAS_PREFER_IDLE, false)
+
+/*
+ * Request max frequency from schedutil whenever a RT task is running.
+ */
+SCHED_FEAT(SUGOV_RT_MAX_FREQ, false)
 
 /*
  * Apply schedtune boost hold to tasks of all sched classes.
