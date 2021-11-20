@@ -237,6 +237,7 @@
 			qcom,oplus-pps-usbpd-detection = <&pm8150b_pdphy>;
 
 			//for oppo chg framework:
+			qcom,oplus-pps-usbpd-detection = <&pm8150b_pdphy>;
 			qcom,input_current_charger_ma = <2000>;
 			qcom,pd_input_current_charger_ma = <2000>;
 			qcom,qc_input_current_charger_ma = <2000>;
