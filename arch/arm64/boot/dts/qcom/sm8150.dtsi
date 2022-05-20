@@ -560,11 +560,34 @@
 			boot_devices = "soc/1d84000.ufshc";
 			shared_meta: vbmeta {
 				compatible = "android,vbmeta";
+
 //#ifdef VENDOR_EDIT
 //#Weizhenxi@BSP.Bootloader.Bootflow, 2018/04/26, rm odm node to disable A/B partition,add recovery node in avb chain verify
 				//parts = "vbmeta,boot,system,vendor,dtbo,odm";
 				parts = "vbmeta,boot,system,vendor,dtbo,recovery";
 //#endif
+
+				parts = "vbmeta,boot,recovery,system,vendor,dtbo,odm";
+			};
+			fstab {
+				compatible = "android,fstab";
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/soc/1d84000.ufshc/by-name/vendor";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait,avb";
+					status = "ok";
+				};
+				odm {
+					compatible = "android,odm";
+					dev = "/dev/block/platform/soc/1d84000.ufshc/by-name/odm";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait,avb";
+					status = "ok";
+				};
+
 			};
 		};
 	};
