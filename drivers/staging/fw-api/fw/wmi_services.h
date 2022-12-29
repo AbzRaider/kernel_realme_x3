@@ -591,6 +591,13 @@ typedef  enum  {
     WMI_SERVICE_TDLS_6GHZ_SUPPORT = 338, /* FW supports 6GHz TDLS both on base channel and offchannel */
     WMI_SERVICE_LINKSPEED_ROAM_TRIGGER_SUPPORT = 339, /* FW supports linkspeed trigger roam */
     WMI_SERVICE_UMAC_HANG_RECOVERY_SUPPORT = 340, /* FW supports recovering system from UMAC hang condition */
+    WMI_SERVICE_COAP_OFFLOAD_SUPPORT = 341, /* FW supports CoAP (the Constrained Application Protocol) offload */
+    WMI_SERVICE_TDLS_WIDEBAND_SUPPORT = 342, /* FW supports Wideband TDLS */
+    WMI_SERVICE_FEATURE_SET_EVENT_SUPPORT = 343, /* FW supports sending of supported feature set event during init time */
+    WMI_SERVICE_HALPHY_CTRL_PATH_STATS = 344, /* HALPHY STATS through control path */
+    WMI_SERVICE_PEER_CHWIDTH_PUNCTURE_BITMAP_SUPPORT = 345, /* FW supports puncture bitmap change with channel width switch */
+    WMI_SERVICE_BANG_RADAR_320_SUPPORT = 346, /* Host to send frequency offset for bang radar in extended field for 320M support */
+
 
     WMI_MAX_EXT2_SERVICE
 
