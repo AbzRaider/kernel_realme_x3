@@ -3,7 +3,7 @@
 # Copyright (C) 2020-2021 Adithya R.
 
 SECONDS=0 # builtin bash timer
-ZIPNAME="Anubis-X3-$(date '+%Y%m%d-%H%M').zip"
+ZIPNAME="Azrael-X3-$(date '+%Y%m%d-%H%M').zip"
 TC_DIR="$HOME/clang-proton"
 DEFCONFIG="x3_defconfig"
 
