@@ -43,14 +43,14 @@ if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 		echo -e "\nCloning AnyKernel3 repo failed! Aborting..."
 		exit 1
 	fi
-	cp $kernel $dtbo AnyKernel3
-	cp $dtb AnyKernel3/dtb
+	cp $kernel $dtbo AnyKernel_RMX3
+	cp $dtb AnyKernel_RMX3/dtb
 	rm -f *zip
-	cd AnyKernel3 || exit
+	cd AnyKernel_RMX3 || exit
 	rm -rf out/arch/arm64/boot
 	zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
 	cd ..
-	rm -rf AnyKernel3
+	rm -rf AnyKernel_RMX3
 	echo -e "\nCompleted in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !"
 	echo "Zip: $ZIPNAME"
 	gdrive upload --share "$ZIPNAME"
