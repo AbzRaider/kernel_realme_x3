@@ -132,7 +132,7 @@
 	cpu-0-0-usr {
 		polling-delay-passive = <0>;
 		polling-delay = <0>;
-		thermal-governor "step_wise";
+		thermal-governor = "step_wise";
 		thermal-sensors = <&tsens0 1>;
 		wake-capable-sensor;
 		trips {
