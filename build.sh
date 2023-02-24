@@ -39,7 +39,7 @@ dtbo="out/arch/arm64/boot/dtbo.img"
 
 if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 	echo -e "\nKernel compiled succesfully! Zipping up...\n"
-	if ! git clone -q https://github.com/akmacc/AnyKernel3.git; then
+	if ! git clone -q https://github.com/AbzRaider/AnyKernel_RMX3.git; then
 		echo -e "\nCloning AnyKernel3 repo failed! Aborting..."
 		exit 1
 	fi
