@@ -19,7 +19,6 @@
 		};
 	};
 
-	/delete-node/ rename_blk;
 };
 
 &hab {

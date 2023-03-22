@@ -19,8 +19,6 @@
 			label = "pmem_shared_mem";
 		};
 	};
-
-	/delete-node/ cpus;
 };
 
 &slpi_tlmm {

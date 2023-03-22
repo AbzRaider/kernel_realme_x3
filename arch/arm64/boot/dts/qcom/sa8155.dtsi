@@ -221,10 +221,26 @@
 };
 
 &thermal_zones {
-	 /delete-node/ cpu-1-7-lowf;
-	 /delete-node/ gpuss-0-lowf;
-	 /delete-node/ camera-lowf;
-	 /delete-node/ mdm-scl-lowf;
+	cpu-1-7-lowf {
+		cooling-maps {
+			/delete-node/ mmcx_vdd_cdev;
+		};
+	};
+	gpuss-0-lowf {
+		cooling-maps {
+			/delete-node/ mmcx_vdd_cdev;
+		};
+	};
+	camera-lowf {
+		cooling-maps {
+			/delete-node/ mmcx_vdd_cdev;
+		};
+	};
+	mdm-scl-lowf {
+		cooling-maps {
+			/delete-node/ mmcx_vdd_cdev;
+		};
+	};
 
 	lmh-dcvs-01 {
 		trips {
@@ -247,7 +263,7 @@
 	gpuss-max-step {
 		trips {
 			gpu-trip0 {
-				temperature = <105000>;
+				temperature = <100000>;
 			};
 		};
 	};
@@ -388,15 +404,6 @@
 	qcom,sde-mixer-display-pref = "primary", "none", "none",
 				"none", "none", "none";
 	/delete-property/ qcom,sde-has-dest-scaler;
-
-	/* roi misr related hw block */
-	qcom,sde-roi-misr-off = <0x82820 0x82880 0x828e0
-				0x82940 0x829a0 0x82a00>;
-	qcom,sde-roi-misr-size = <0x60>;
-
-	qcom,sde-dspp-blocks {
-		qcom,sde-dspp-roi-misr = <0x1200 0x00010000>;
-	};
 };
 
 #include <dt-bindings/gpio/gpio.h>
@@ -411,10 +418,6 @@
 		interrupts = <GIC_SPI 267 0>;
 		number-of-rate-detectors = <2>;
 		rate-detector-interfaces = <0 1>;
-		iommus = <&apps_smmu 0x1B5C 0x1>,
-			 <&apps_smmu 0x1B5E 0x0>;
-		qcom,smmu-s1-bypass;
-		qcom,iova-mapping = <0x0 0xFFFFFFFF>;
 
 		sdr0: qcom,hs0_i2s {
 			compatible = "qcom,hsi2s-interface";
@@ -426,6 +429,9 @@
 			pinctrl-1 = <&hs1_i2s_mclk_sleep &hs1_i2s_sck_sleep
 				     &hs1_i2s_ws_sleep &hs1_i2s_data0_sleep
 				     &hs1_i2s_data1_sleep>;
+			iommus = <&apps_smmu 0x1B5C 0x0>;
+			qcom,smmu-s1-bypass;
+			qcom,iova-mapping = <0x0 0xFFFFFFFF>;
 			bit-clock-hz = <12288000>;
 			data-buffer-ms = <10>;
 			bit-depth = <32>;
@@ -455,6 +461,9 @@
 			pinctrl-1 = <&hs2_i2s_mclk_sleep &hs2_i2s_sck_sleep
 				     &hs2_i2s_ws_sleep &hs2_i2s_data0_sleep
 				     &hs2_i2s_data1_sleep>;
+			iommus = <&apps_smmu 0x1B5D 0x0>;
+			qcom,smmu-s1-bypass;
+			qcom,iova-mapping = <0x0 0xFFFFFFFF>;
 			bit-clock-hz = <12288000>;
 			data-buffer-ms = <10>;
 			bit-depth = <32>;
@@ -484,6 +493,9 @@
 			pinctrl-1 = <&hs3_i2s_mclk_sleep &hs3_i2s_sck_sleep
 				     &hs3_i2s_ws_sleep &hs3_i2s_data0_sleep
 				     &hs3_i2s_data1_sleep>;
+			iommus = <&apps_smmu 0x1B5E 0x0>;
+			qcom,smmu-s1-bypass;
+			qcom,iova-mapping = <0x0 0xFFFFFFFF>;
 			bit-clock-hz = <12288000>;
 			data-buffer-ms = <10>;
 			bit-depth = <32>;
@@ -756,10 +768,5 @@
 	status="disabled";
 };
 
-&kgsl_msm_iommu {
-	qcom,secure-size = <0x20000000>; /* 512MB */
-};
-
 #include "sa8155-audio.dtsi"
-#include "sa8155-camera.dtsi"
 #include "sa8155-camera-sensor.dtsi"

@@ -812,10 +812,7 @@
 		pinctrl-0 = <&qupv3_se17_i2c_active>;
 		pinctrl-1 = <&qupv3_se17_i2c_sleep>;
 		qcom,wrapper-core = <&qupv3_2>;
-		//#ifdef VENDOR_EDIT
-		//Wanghao@BSP.group 2018-04-15 add for enable tp function
-		//status = "disabled";
-		//#endif
+		status = "disabled";
 	};
 
 	qupv3_se18_i2c: i2c@0xc84000 {

@@ -74,8 +74,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x0>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <488>;
-			cache-size = <0x8000>;
+			capacity-dmips-mhz = <1024>;
 			next-level-cache = <&L2_0>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
@@ -111,8 +110,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x100>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <488>;
-			cache-size = <0x8000>;
+			capacity-dmips-mhz = <1024>;
 			next-level-cache = <&L2_1>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
@@ -143,8 +141,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x200>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <488>;
-			cache-size = <0x8000>;
+			capacity-dmips-mhz = <1024>;
 			next-level-cache = <&L2_2>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
@@ -175,8 +172,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x300>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <488>;
-			cache-size = <0x8000>;
+			capacity-dmips-mhz = <1024>;
 			next-level-cache = <&L2_3>;
 			sched-energy-costs = <&CPU_COST_0 &CLUSTER_COST_0>;
 			qcom,lmh-dcvs = <&lmh_dcvs0>;
@@ -207,8 +203,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x400>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <1024>;
-			cache-size = <0x20000>;
+			capacity-dmips-mhz = <1740>;
 			next-level-cache = <&L2_4>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
@@ -248,8 +243,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x500>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <1024>;
-			cache-size = <0x20000>;
+			capacity-dmips-mhz = <1740>;
 			next-level-cache = <&L2_5>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
@@ -289,8 +283,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x600>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <1024>;
-			cache-size = <0x20000>;
+			capacity-dmips-mhz = <1740>;
 			next-level-cache = <&L2_6>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
@@ -330,8 +323,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x700>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <1024>;
-			cache-size = <0x20000>;
+			capacity-dmips-mhz = <1740>;
 			next-level-cache = <&L2_7>;
 			sched-energy-costs = <&CPU_COST_2 &CLUSTER_COST_2>;
 			qcom,lmh-dcvs = <&lmh_dcvs1>;
@@ -556,8 +548,7 @@
 	};
 
 	chosen {
-		bootargs = "rcupdate.rcu_expedited=1 rcu_nocbs=0-7 cgroup.memory=nokmem,nosocket noirqdebug nosoftlockup mce=ignore_ce";
-
+		bootargs = "rcupdate.rcu_expedited=1 rcu_nocbs=0-7 cgroup.memory=nokmem,nosocket";
 	};
 
 	soc: soc { };
@@ -565,44 +556,13 @@
 	firmware: firmware {
 		android {
 			compatible = "android,firmware";
+			boot_devices = "soc/1d84000.ufshc";
 			shared_meta: vbmeta {
 				compatible = "android,vbmeta";
 //#ifdef VENDOR_EDIT
 //#Weizhenxi@BSP.Bootloader.Bootflow, 2018/04/26, rm odm node to disable A/B partition,add recovery node in avb chain verify
 				//parts = "vbmeta,boot,system,vendor,dtbo,odm";
 				parts = "vbmeta,boot,system,vendor,dtbo,recovery";
-//#endif
-			};
-			android_q_fstab: fstab {
-				compatible = "android,fstab";
-				vendor {
-					compatible = "android,vendor";
-					dev = "/dev/block/platform/soc/8804000.sdhci/by-name/vendor";
-					type = "ext4";
-//#ifdef VENDOR_EDIT
-//yh@PSW.BSP.Storage.EXT4, 2018-11-26 add for ext4 async discard suppot
-					//mnt_flags = "ro,barrier=1,discard";
-					mnt_flags = "ro,barrier=1,async_discard";
-//#endif
-
-//#ifdef VENDOR_EDIT
-//#Weizhenxi@BSP.Bootloader.Bootflow, 2018/04/26, rm slotselect to disable A/B partition
-					//fsmgr_flags = "wait,slotselect,avb";
-					fsmgr_flags = "wait,avb";
-//#endif
-					status = "ok";
-				};
-
-//#ifdef VENDOR_EDIT
-//#Weizhenxi@BSP.Bootloader.Bootflow, 2018/04/26, rm odm node to disable A/B partition
-//				odm {
-//					compatible = "android,odm";
-//					dev = "/dev/block/platform/soc/8804000.sdhci/by-name/odm";
-//					type = "ext4";
-//					mnt_flags = "ro,barrier=1,discard";
-//					fsmgr_flags = "wait,slotselect,avb";
-//					status = "ok";
-//				};
 //#endif
 			};
 		};
@@ -764,6 +724,16 @@
 			label = "cont_splash_region";
 		};
 
+		disp_rdump_memory: disp_rdump_region {
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x9c000000 0x0 0x02400000>;
+			//#else
+			reg = <0x0 0x9d000000 0x0 0x02400000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
+			label = "disp_rdump_region";
+		};
+
 		adsp_mem: adsp_region {
 			compatible = "shared-dma-pool";
 			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
@@ -812,6 +782,12 @@
 			size = <0x0 0xA000000>;
 		};
 
+		dump_mem: mem_dump_region {
+			compatible = "shared-dma-pool";
+			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
+			reusable;
+			size = <0 0x2400000>;
+		};
 		// #ifdef OPLUS_BUG_STABILITY
 		// #zhangzongyu@BSP.kernel.stability, 2020/05/15, Add for dump device info
 		// #endif
@@ -893,7 +869,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU0>;
-		status = "disabled";
 	};
 
 	jtag_mm1: jtagmm@7140000 {
@@ -905,7 +880,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU1>;
-		status = "disabled";
 	};
 
 	jtag_mm2: jtagmm@7240000 {
@@ -917,7 +891,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU2>;
-		status = "disabled";
 	};
 
 	jtag_mm3: jtagmm@7340000 {
@@ -929,7 +902,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU3>;
-		status = "disabled";
 	};
 
 	jtag_mm4: jtagmm@7440000 {
@@ -941,7 +913,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU4>;
-		status = "disabled";
 	};
 
 	jtag_mm5: jtagmm@7540000 {
@@ -953,7 +924,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU5>;
-		status = "disabled";
 	};
 
 	jtag_mm6: jtagmm@7640000 {
@@ -965,7 +935,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU6>;
-		status = "disabled";
 	};
 
 	jtag_mm7: jtagmm@7740000 {
@@ -977,7 +946,6 @@
 		clock-names = "core_clk";
 
 		qcom,coresight-jtagmm-cpu = <&CPU7>;
-		status = "disabled";
 	};
 
 	intc: interrupt-controller@17a00000 {
@@ -1619,56 +1587,6 @@
 			&cpu7_cpu_l3_lat>;
 
 		#clock-cells = <1>;
-		qcom,cpufreq-table-0 =
-			< 300000>,
-			< 403200>,
-			< 480000>,
-			< 576000>,
-			< 672000>,
-			< 768000>,
-			< 864000>,
-			< 979200>,
-			<1075200>,
-			<1171200>,
-			<1267200>;
-
-		qcom,cpufreq-table-4 =
-			< 576000>,
-			< 672000>,
-			< 768000>,
-			< 864000>,
-			< 960000>,
-			<1056000>,
-			<1152000>,
-			<1248000>,
-			<1344000>,
-			<1420800>,
-			<1497600>,
-			<1593600>,
-			<1689600>,
-			<1785600>,
-			<1862400>,
-			<1939200>,
-			<2016000>;
-
-		qcom,cpufreq-table-7 =
-			< 691200>,
-			< 768000>,
-			< 864000>,
-			< 940800>,
-			<1017600>,
-			<1113600>,
-			<1190400>,
-			<1286400>,
-			<1363200>,
-			<1459200>,
-			<1536000>,
-			<1632000>,
-			<1728000>,
-			<1824000>,
-			<1900800>,
-			<1977600>,
-			<2054400>;
 	};
 
 	clock_debugcc: qcom,cc-debug {
@@ -2524,8 +2442,8 @@
 		"MAX";
 
 		/* PM QoS */
-		qcom,pm-qos-cpu-groups = <0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80>;
-		qcom,pm-qos-cpu-group-latency-us = <44 44 44 44 44 44 44 44>;
+		qcom,pm-qos-cpu-groups = <0x0f 0xf0>;
+		qcom,pm-qos-cpu-group-latency-us = <44 44>;
 		qcom,pm-qos-default-cpu = <0>;
 
 		pinctrl-names = "dev-reset-assert", "dev-reset-deassert";
@@ -2552,7 +2470,6 @@
 		compatible = "qcom,msm-fastrpc-compute";
 		qcom,fastrpc-adsp-audio-pdr;
 		qcom,rpc-latency-us = <235>;
-		qcom,qos-cores = <0 1 2 3>;
 
 		qcom,msm_fastrpc_compute_cb1 {
 			compatible = "qcom,msm-fastrpc-compute-cb";
@@ -3140,7 +3057,7 @@
 		compatible = "qcom,qseecom";
 		//ifdef OPLUS_FEATURE_SECURITY_COMMON
 		//Long.Liu@BSP.Fingerprint.Basic 2018/11/27 ,Add for set TZAPPMEM to 62M (KBA-181104234050)
-		/*Long.Liu@Bsp.Fingerprint.Basic, 2019/09/06, expend tz memory to 94*/
+		/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
 		//reg = <0x87900000 0x2200000>;
 		reg = <0x87900000 0x5E00000>;
 		//endif OPLUS_FEATURE_SECURITY_COMMON
@@ -3256,6 +3173,61 @@
 		qcom,no-clock-support;
 		iommus = <&apps_smmu 0x0504 0x0011>,
 			 <&apps_smmu 0x0514 0x0011>;
+	};
+
+	mem_dump {
+		compatible = "qcom,mem-dump";
+		memory-region = <&dump_mem>;
+
+		rpmh {
+			qcom,dump-size = <0x2000000>;
+			qcom,dump-id = <0xec>;
+		};
+
+		rpm_sw {
+			qcom,dump-size = <0x28000>;
+			qcom,dump-id = <0xea>;
+		};
+
+		pmic {
+			qcom,dump-size = <0x80000>;
+			qcom,dump-id = <0xe4>;
+		};
+
+		fcm {
+			qcom,dump-size = <0x8400>;
+			qcom,dump-id = <0xee>;
+		};
+
+		tmc_etf {
+			qcom,dump-size = <0x10000>;
+			qcom,dump-id = <0xf0>;
+		};
+
+		etf_swao {
+			qcom,dump-size = <0x8400>;
+			qcom,dump-id = <0xf1>;
+		};
+
+		etr_reg {
+			qcom,dump-size = <0x1000>;
+			qcom,dump-id = <0x100>;
+		};
+
+		etf_reg {
+			qcom,dump-size = <0x1000>;
+			qcom,dump-id = <0x101>;
+		};
+
+		etfswao_reg {
+			qcom,dump-size = <0x1000>;
+			qcom,dump-id = <0x102>;
+		};
+
+		misc_data {
+			qcom,dump-size = <0x1000>;
+			qcom,dump-id = <0xe8>;
+		};
 	};
 
 	qcom_tzlog: tz-log@146bf720 {
@@ -4256,6 +4228,7 @@
 #include "sm8150-bus.dtsi"
 #include "sm8150-pcie.dtsi"
 #include "sm8150-smp2p.dtsi"
+#include "sm8150-coresight.dtsi"
 #include "msm-arm-smmu-sm8150.dtsi"
 #include "sm8150-qupv3.dtsi"
 #include "sm8150-npu.dtsi"
@@ -4266,92 +4239,3 @@
 #include "sm8150-usb.dtsi"
 #include "sm8150-gpu.dtsi"
 #include "sm8150-mhi.dtsi"
-&qupv3_se15_i2c {
-	status = "okay";
-
-	bq27541-battery@55 {
-		status = "okay";
-		compatible = "oplus,bq27541-battery";
-		reg = <0x55>;
-		qcom,modify-soc-smooth;
-		qcom,battery-full-param;//only for wite battery full param in guage dirver probe on 7250 platform 
-	};
-
-	oplus_short-ic@58 {
-		status = "okay";
-		compatible = "oplus,oplus_short-ic";
-		reg = <0x58>;
-		qcom,modify-soc-smooth;
-	};
-
-	stm8s_fastcg@26{
-		status = "okay";
-		compatible = "oplus,stm8s-fastcg";
-		reg = <0x26>;
-		qcom,vooc-low-temp = <50>;
-		qcom,oplus_batt_4400mv;
-		//qcom,vooc_fw_update_newmethod;
-		///qcom,vooc-fw-type = <0x22>;//5A
-		qcom,vooc-high-temp = <430>;
-		qcom,vooc-low-soc = <1>;
-		qcom,vooc-high-soc = <85>;
-		qcom,vooc-fw-type = <11>;
-
-		qcom,vooc_multistep_adjust_current_support;
-		qcom,vooc_multistep_initial_batt_temp = <1000>;
-		qcom,vooc_strategy_normal_current = <0x06>;
-
-		qcom,vooc_strategy1_batt_high_temp0 = <410>;
-		qcom,vooc_strategy1_batt_high_temp1 = <425>;
-		qcom,vooc_strategy1_batt_high_temp2 = <435>;
-		qcom,vooc_strategy1_batt_low_temp2 = <430>;
-		qcom,vooc_strategy1_batt_low_temp1 = <410>;
-		qcom,vooc_strategy1_batt_low_temp0 = <390>;
-
-		qcom,vooc_strategy1_high_current0 = <0x04>;//4A
-		qcom,vooc_strategy1_high_current1 = <0x03>;//3A
-		qcom,vooc_strategy1_high_current2 = <0x02>;//2A
-		qcom,vooc_strategy1_low_current2 = <0x03>;//3A
-		qcom,vooc_strategy1_low_current1 = <0x05>;//5A
-		qcom,vooc_strategy1_low_current0 = <0x06>;//6A
-
-		qcom,vooc_strategy2_batt_up_temp1 = <370>;
-		qcom,vooc_strategy2_batt_up_down_temp2 = <380>;
-		qcom,vooc_strategy2_batt_up_temp3 = <390>;
-		qcom,vooc_strategy2_batt_up_down_temp4 = <395>;
-		qcom,vooc_strategy2_batt_up_temp5 = <400>;
-		qcom,vooc_strategy2_batt_up_temp6 = <415>;
-		qcom,vooc_strategy2_high0_current = <0x06>;
-		qcom,vooc_strategy2_high1_current = <0x06>;
-		qcom,vooc_strategy2_high2_current = <0x06>;
-		qcom,vooc_strategy2_high3_current = <0x06>;
-
-		pinctrl-names = "switch1_act_switch2_act", "switch1_sleep_switch2_sleep",
-						"switch1_act_switch3_act", "switch1_sleep_switch3_sleep",
-						"switch1_act_switch2_sleep", "switch1_sleep_switch2_act",
-						"clock_active","clock_sleep",
-						"data_active","data_sleep",
-						"reset_active","reset_sleep";
-		pinctrl-0 = <&charging_switch1_active>;
-		pinctrl-1 = <&charging_switch1_sleep >;
-		pinctrl-2 = <&charging_switch1_active>;
-		pinctrl-3 = <&charging_switch1_sleep >;
-		pinctrl-4 = <&charging_switch1_active>;
-		pinctrl-5 = <&charging_switch1_sleep>;
-		pinctrl-6 = <&charging_clock_active >;
-		pinctrl-7 = <&charging_clock_sleep >;
-		pinctrl-8 = <&charging_data_active >;
-		pinctrl-9 = <&charging_data_sleep >;
-		pinctrl-10 = <&charging_reset_active >;
-		pinctrl-11 = <&charging_reset_sleep >;
-
-		qcom,charging_switch1-gpio = <&tlmm 59 0x00>;
-		//qcom,charging_switch2-gpio = <&tlmm 113 0x00>;
-		//qcom,charging_switch3-gpio = <&tlmm 38 0x00>;
-
-		qcom,charging_reset-gpio = <&tlmm 131 0x00>;
-		qcom,charging_clock-gpio = <&tlmm 92 0x00>;
-		qcom,charging_data-gpio = <&tlmm 93 0x00>;
-	};
-
-};
